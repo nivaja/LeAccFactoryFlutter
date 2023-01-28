@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
+import 'package:get/get_navigation/src/extension_navigation.dart';
 
 class DioInterceptor extends InterceptorsWrapper{
   @override
@@ -31,14 +33,20 @@ class DioInterceptor extends InterceptorsWrapper{
     }
     switch(response.statusCode){
       case 500:
-        getx.Get.defaultDialog(
+          AwesomeDialog(
+            context: navigator!.context,
+            dialogType: DialogType.success,
+            animType: AnimType.scale,
             title: response.statusMessage.toString() + response.data['exception'],
-            middleText: response.data["_server_messages"].toString()
-        );break;
+            desc: response.data["_server_messages"].toString(),
+            btnOkOnPress: () {},
+          ).show();
+          break;
 
       case 201:
         getDialog('Created'); break;
       case 401:
+        print(response.data);
         getDialog(response.statusMessage);break;
       case 400:
         getDialog(response.statusMessage);break;

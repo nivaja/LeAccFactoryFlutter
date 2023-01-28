@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:leacc_factory/app/modules/http/dio.dart';
 
@@ -15,12 +17,17 @@ class FrappeGet {
     return response?.data['message'][fieldName];
   }
 
-  static Future<List<DropDownItem>> dropDownValue ({required String docType, String txt='', String? referenceDoctype} ) async{
-    Response? result = await DioClient().get('/method/frappe.desk.search.search_link',queryParameters: {
+
+  static Future<List<DropDownItem>> dropDownValue ({required String docType, String txt='', String? referenceDoctype, Map<String,dynamic>? filters } ) async{
+    Map<String,dynamic> queryParams = {
       'txt':txt,
       'doctype':docType,
-      'reference_doctype':referenceDoctype
-    });
+      'reference_doctype':referenceDoctype,
+    };
+    if(filters != null){
+      queryParams['filters']=jsonEncode(filters);
+    }
+    Response? result = await DioClient().get('/method/frappe.desk.search.search_link',queryParameters: queryParams);
     return List.from(result?.data['results']).map((e)=>DropDownItem(e['value'], e['description'])).toList();
   }
 

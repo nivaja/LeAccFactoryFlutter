@@ -6,8 +6,8 @@ import 'package:leacc_factory/app/modules/common/util/get_value.dart';
 class FrappeSearchDelegate extends SearchDelegate {
   String docType;
   String? referenceDoctype;
-
-  FrappeSearchDelegate({required this.docType, this.referenceDoctype}) {}
+  Map<String,dynamic>? filters;
+  FrappeSearchDelegate({required this.docType, this.referenceDoctype,this.filters}) {}
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -37,7 +37,7 @@ class FrappeSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     return FutureBuilder<List<DropDownItem>>(
       future: FrappeGet.dropDownValue(
-          docType: docType, txt: query, referenceDoctype: referenceDoctype),
+          docType: docType, txt: query, referenceDoctype: referenceDoctype, filters:filters),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return ListView.builder(

@@ -1,11 +1,12 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart' as getx;
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -57,10 +58,19 @@ class DioClient {
           indicator: CircularProgressIndicator(backgroundColor: Colors.white),
           status: 'Saving...');
       Response? response = await dio?.post(endpoint, data: data);
+         return response;
+    } on DioError catch (e) {
 
-      return response;
-    } on Exception catch (e) {
-      getx.Get.defaultDialog(title: 'Error', middleText: e.toString());
+        print(e.response!.data);
+        AwesomeDialog(
+        context: navigator!.context,
+        dialogType: DialogType.error,
+        animType: AnimType.scale,
+        title: e.response!.statusMessage,
+
+        desc: e.response!.data['exception'],
+        btnOkOnPress: () {},
+      ).show();
     }finally{
       EasyLoading.dismiss();
     }

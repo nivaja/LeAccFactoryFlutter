@@ -21,6 +21,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   cupertino_icons: ^1.0.2
   get: 4.6.5
+  awesome_dialog: ^3.0.2
   flutter: 
     sdk: flutter
 
