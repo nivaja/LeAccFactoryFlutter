@@ -46,6 +46,9 @@ class PurchaseView extends GetView<PurchaseController> {
                   name: 'posting_date',
                   initialEntryMode: DatePickerEntryMode.calendar,
                   inputType: InputType.both,
+                  valueTransformer: (val){
+                    return val!.toString();
+                  },
                   decoration: FrappeInputDecoration(
                       label: 'Posting Date',
                       fieldIcons: const Icon(Icons.date_range)
@@ -121,7 +124,7 @@ class PurchaseView extends GetView<PurchaseController> {
                           return ListTile(
                               leading: const Icon(Icons.list),
                               trailing: Text(
-                                controller.itemList[index].itemCode,
+                                controller.itemList[index]['item_code'],
                                 style: TextStyle(color: Colors.green, fontSize: 15),
                               ),
                               title: Text("List item $index"));
@@ -233,6 +236,9 @@ class PurchaseView extends GetView<PurchaseController> {
                   (val){
                 cal(formKey);
               },
+              valueTransformer: (val){
+                return double.tryParse(val!);
+              },
               validator: FormBuilderValidators.compose(
                   [FormBuilderValidators.required(),
                     FormBuilderValidators.numeric()]
@@ -246,6 +252,9 @@ class PurchaseView extends GetView<PurchaseController> {
           FormBuilderTextField(
               name: 'rate',
               keyboardType: TextInputType.number,
+              valueTransformer: (val){
+                return double.tryParse(val!);
+              },
               onChanged:
                   (val){
                 cal(formKey);
@@ -264,7 +273,9 @@ class PurchaseView extends GetView<PurchaseController> {
               name: 'amount',
               initialValue: '0',
               readOnly: true,
-
+              valueTransformer: (val){
+                return double.tryParse(val!);
+              },
               keyboardType: TextInputType.number,
               validator: FormBuilderValidators.compose(
                   [FormBuilderValidators.required(),
@@ -283,7 +294,7 @@ class PurchaseView extends GetView<PurchaseController> {
                   onPressed: () {
                     if (formKey.currentState?.saveAndValidate() ?? false) {
                       print(formKey.currentState?.value);
-                      controller.itemList.add(SalesItem.fromJson(formKey.currentState!.value));
+                      controller.itemList.add(formKey.currentState!.value);
 
                     } else {
                       print(formKey.currentState?.value);

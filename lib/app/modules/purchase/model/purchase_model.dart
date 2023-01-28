@@ -55,23 +55,4 @@ class PurchaseInvoice {
   }
 }
 
-class PurchasePayment {
-  PurchasePayment({
-    required this.modeOfPayment,
-    required this.amount,
-  });
-  late final String modeOfPayment;
-  late final double amount;
 
-  PurchasePayment.fromJson(Map<String, dynamic> json){
-    modeOfPayment = json['mode_of_payment'];
-    amount = json['amount'];
-      }
-
-  Map<String, dynamic> toJson() {
-    final _purchaseInvoiceData = <String, dynamic>{};
-    _purchaseInvoiceData['mode_of_payment'] = modeOfPayment;
-    _purchaseInvoiceData['amount'] = amount;
-    return _purchaseInvoiceData;
-  }
-}

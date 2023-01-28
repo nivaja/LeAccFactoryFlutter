@@ -7,14 +7,11 @@ import '../../sales/model/sales_item.dart';
 
 class PurchaseController extends GetxController {
   var purchaseList = <Map<String,dynamic>>[].obs;
-  PurchaseInvoice? purchaseInvoice;
   RxBool isLoading = false.obs;
   Rx<bool> endOfReults = false.obs;
   //TODO: Implement PurchaseController
-  var itemList = <SalesItem>[].obs;
-  var total=0.0.obs;
+  var itemList = <Map<String,dynamic>>[].obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();

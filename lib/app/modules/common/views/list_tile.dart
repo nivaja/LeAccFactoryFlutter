@@ -12,21 +12,17 @@ class FrappeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: ListTile(
-        leading: date != null ? Text(date!, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[600]),)
-            : image !=null?CircleAvatar(
-          backgroundImage: AssetImage("image.png"),
-        ):
-        Initicon(text: title,borderRadius:BorderRadius.circular(5),)
-        ,
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[600]),),
-        trailing:  Text(trailingText, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[600]),),
-        subtitle: Text(subtitle),
-        // tileColor: Colors.grey[100],
-      ),
-      // shadowColor: Colors.blue[600],
+    return ListTile(
+            leading: date != null ? Text(date!, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[600]),)
+          : image !=null?CircleAvatar(
+        backgroundImage: AssetImage("image.png"),
+      ):
+      Initicon(text: title,borderRadius:BorderRadius.circular(5),)
+      ,
+      title: Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[600]),),
+      trailing:  Text(trailingText, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[600]),),
+      subtitle: Text(subtitle),
+      // tileColor: Colors.grey[100],
     );
   }
 }
