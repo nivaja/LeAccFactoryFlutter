@@ -56,19 +56,19 @@ class DioClient {
       EasyLoading.show(
           maskType: EasyLoadingMaskType.black,
           indicator: CircularProgressIndicator(backgroundColor: Colors.white),
-          status: 'Saving...');
+          status: 'Please Wait...');
       Response? response = await dio?.post(endpoint, data: data);
          return response;
     } on DioError catch (e) {
 
-        print(e.response!.data);
+        print(e.response?.data);
         AwesomeDialog(
         context: navigator!.context,
         dialogType: DialogType.error,
         animType: AnimType.scale,
-        title: e.response!.statusMessage,
+        title: e.response?.statusMessage,
 
-        desc: e.response!.data['exception'],
+        desc: e.response?.data['exception'],
         btnOkOnPress: () {},
       ).show();
     }finally{

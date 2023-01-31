@@ -1,15 +1,19 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../modules/expense/bindings/expense_binding.dart';
 import '../modules/expense/views/expense_list_view.dart';
 import '../modules/expense/views/expense_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/http/dio.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_list_view.dart';
 import '../modules/payment/views/payment_view.dart';
+import '../modules/preference/bindings/preference_binding.dart';
+import '../modules/preference/views/preference_view.dart';
 import '../modules/purchase/bindings/purchase_binding.dart';
 import '../modules/purchase/views/purchase_list_view.dart';
 import '../modules/purchase/views/purchase_view.dart';
@@ -21,7 +25,8 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static var INITIAL =
+      GetStorage('Config').read('baseUrl') != null ? Routes.HOME : Routes.LOGIN;
 
   static final routes = [
     GetPage(
@@ -51,7 +56,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EXPENSE,
-      page: () =>  ExpenseView(),
+      page: () => ExpenseView(),
       binding: ExpenseBinding(),
     ),
     GetPage(
@@ -69,6 +74,10 @@ class AppPages {
       page: () => PurchaseListView(),
       binding: PurchaseBinding(),
     ),
-
+    GetPage(
+      name: _Paths.PREFERENCE,
+      page: () => const PreferenceView(),
+      binding: PreferenceBinding(),
+    ),
   ];
 }

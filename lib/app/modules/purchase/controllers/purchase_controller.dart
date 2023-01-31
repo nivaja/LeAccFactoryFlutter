@@ -48,4 +48,8 @@ class PurchaseController extends GetxController {
     var response = await FrappeAPI.getDetail(docType: 'Purchase Invoice', name: name);
     return PurchaseInvoice.fromJson(response?.data);
   }
+
+  void clearItems() {
+    itemList.clear();
+  }
 }

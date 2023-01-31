@@ -131,7 +131,8 @@ class PaymentView extends GetView<PaymentController> {
                         fieldIcons: const Icon(Icons.attach_money)
                     )
                 ),
-
+                payment!=null?
+                    SizedBox.shrink():
                 Row(
                   children: <Widget>[
                     Expanded(

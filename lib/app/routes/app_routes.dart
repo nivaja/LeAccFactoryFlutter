@@ -11,11 +11,10 @@ abstract class Routes {
   static const EXPENSE = _Paths.EXPENSE;
   static const PURCHASE = _Paths.PURCHASE;
   static const PURCHASE_LIST = _Paths.PURCHASE_LIST;
+  static const PREFERENCE = _Paths.PREFERENCE;
 }
 
 abstract class _Paths {
-
-
   _Paths._();
   static const HOME = '/home';
   static const LOGIN = '/login';
@@ -23,7 +22,8 @@ abstract class _Paths {
   static const PAYMENT = '/payment';
   static const PAYMENT_LIST = '/payment_list';
   static const EXPENSE = '/expense';
-  static const EXPENSE_LIST='/expense_list';
+  static const EXPENSE_LIST = '/expense_list';
   static const PURCHASE = '/purchase';
   static const PURCHASE_LIST = '/purchase_list';
+  static const PREFERENCE = '/preference';
 }

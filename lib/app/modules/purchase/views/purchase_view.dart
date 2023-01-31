@@ -110,10 +110,11 @@ class PurchaseView extends GetView<PurchaseController> {
                       return ListTile(
                           leading: const Icon(Icons.list),
                           trailing: Text(
-                            purchaseInvoice!.items[index].itemCode,
+                              (purchaseInvoice!.items[index].rate * purchaseInvoice!.items[index].qty).toString(),
+
                             style: TextStyle(color: Colors.green, fontSize: 15),
                           ),
-                          title: Text("List item $index"));
+                          title: Text("${purchaseInvoice!.items[index].itemCode} ,${purchaseInvoice!.items[index].rate},${purchaseInvoice!.items[index].qty}"));
                     },
                   )
 
@@ -124,15 +125,16 @@ class PurchaseView extends GetView<PurchaseController> {
                           return ListTile(
                               leading: const Icon(Icons.list),
                               trailing: Text(
-                                controller.itemList[index]['item_code'],
+                                (controller.itemList[index]['rate'] *controller.itemList[index]['qty']).toString(),
                                 style: TextStyle(color: Colors.green, fontSize: 15),
                               ),
-                              title: Text("List item $index"));
+                              title: Text("${controller.itemList[index]['item_code']} , ${controller.itemList[index]['rate']},${controller.itemList[index]['qty']}"));
                         },
                       ),
                   ),
                 ),
-
+                purchaseInvoice!=null?
+                    SizedBox.shrink():
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -164,6 +166,7 @@ class PurchaseView extends GetView<PurchaseController> {
                       child: OutlinedButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
+                          controller.clearItems();
                         },
                         // color: Theme.of(context).colorScheme.secondary,
                         child: Text(
@@ -327,8 +330,8 @@ class PurchaseView extends GetView<PurchaseController> {
     );
   }
   cal(formKey){
-    double qty = double.parse(formKey.currentState?.fields["qty"].value);
-    double rate = double.parse(formKey.currentState?.fields["rate"].value);
+    double qty = double.parse(formKey.currentState.fields["qty"].value??"0");
+    double rate = double.parse(formKey.currentState.fields["rate"].value??"0");
     if (qty != null || rate != null) {
       formKey.currentState?.fields["amount"]?.didChange((qty * rate).toString());
 

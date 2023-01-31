@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:leacc_factory/app/modules/home/views/home_view.dart';
 
 import '../../../data/login_provider.dart';
 import '../../common/views/action_button.dart';
@@ -44,11 +45,12 @@ class LoginView extends GetView<LoginController> {
               SizedBox(
                 height: 30,
               ),
-              FrappeActionButton(buttonText: 'Login',onPressed: () async{
+              FrappeActionButton(buttonText: 'Login',onPressed: () {
 
 
                 LoginProvider().post(server: serverController.text, usr: emailController.text, pwd: passwordController.text);
-              },
+
+                },
               ),
             ],
           ),

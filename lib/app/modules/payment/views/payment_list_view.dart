@@ -38,8 +38,7 @@ class PaymentListView extends GetView<PaymentController> {
                           child: InkWell(
                             onTap: ()=>Get.to(PaymentView(payment: controller.paymentList[index],)),
                             child: FrappeListTile(
-                              //controller.paymentList[index]['posting_date']
-                              date:  index.toString(),
+                              date:  controller.paymentList[index]['posting_date'],
                               title: controller.paymentList[index]['party'],
                               subtitle: controller.paymentList[index]['name'],
                               trailingText:controller.paymentList[index]['paid_amount'].toString(),

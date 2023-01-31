@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leacc_factory/app/modules/preference/views/preference_view.dart';
 
 
 import 'package:leacc_factory/app/modules/sales/views/sales_view.dart';
@@ -18,11 +19,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int currentIndex = 0;
   static  List<Widget> widgetOptions = <Widget>[
-    LoginView(),
     SalesView(),
     PurchaseListView(),
     PaymentListView(),
     ExpenseListView(),
+    PreferenceView(),
 
 
   ];
@@ -43,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
         selectedItemColor: Colors.blue,
         onTap: (index) => setState(() => currentIndex = index),
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Login'),
+
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag), label: 'Sales'),
           BottomNavigationBarItem(
@@ -51,10 +52,9 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Payment'),
 
           BottomNavigationBarItem(icon: Icon(Icons.attach_money_outlined), label: 'Expense'),
-          // BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Account'),
 
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.menu_book_rounded), label: 'Ledger')
+
         ],
       ),
     );
