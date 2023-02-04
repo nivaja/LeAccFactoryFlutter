@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leacc_factory/app/modules/preference/views/preference_view.dart';
+import 'package:leacc_factory/app/modules/sales/views/sales_list_view.dart';
 
 
 import 'package:leacc_factory/app/modules/sales/views/sales_view.dart';
@@ -19,7 +20,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int currentIndex = 0;
   static  List<Widget> widgetOptions = <Widget>[
-    SalesView(),
+    SalesListView(),
     PurchaseListView(),
     PaymentListView(),
     ExpenseListView(),
@@ -44,7 +45,6 @@ class _HomeViewState extends State<HomeView> {
         selectedItemColor: Colors.blue,
         onTap: (index) => setState(() => currentIndex = index),
         items: const <BottomNavigationBarItem>[
-
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag), label: 'Sales'),
           BottomNavigationBarItem(

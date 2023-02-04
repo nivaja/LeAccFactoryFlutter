@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:leacc_factory/app/modules/payment/controllers/payment_controller.dart';
 import 'package:leacc_factory/app/modules/payment/views/payment_view.dart';
-
+import 'package:intl/intl.dart';
 import '../../common/views/list_tile.dart';
 
 class PaymentListView extends GetView<PaymentController> {
@@ -38,10 +38,12 @@ class PaymentListView extends GetView<PaymentController> {
                           child: InkWell(
                             onTap: ()=>Get.to(PaymentView(payment: controller.paymentList[index],)),
                             child: FrappeListTile(
+                              trailingTextColor: controller.paymentList[index]['payment_type']=="Pay"?Colors.red:Colors.green,
+                              status:controller.paymentList[index]['status'] ,
                               date:  controller.paymentList[index]['posting_date'],
                               title: controller.paymentList[index]['party'],
                               subtitle: controller.paymentList[index]['name'],
-                              trailingText:controller.paymentList[index]['paid_amount'].toString(),
+                              trailingText:NumberFormat.currency(symbol: 'Rs.').format(controller.paymentList[index]['paid_amount']),
                             ),
                           ),
                         ) : const SizedBox.shrink();

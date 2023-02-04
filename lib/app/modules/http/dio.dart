@@ -27,8 +27,8 @@ class DioClient {
     var cookieJar = await getCookiePath();
     dio = Dio(BaseOptions(baseUrl: baseUrl))
       ..interceptors.addAll([CookieManager(cookieJar), DioInterceptor()]);
-    dio?.options.connectTimeout = 60 * 1000;
-    dio?.options.receiveTimeout = 60 * 1000;
+    dio?.options.connectTimeout = 20 * 1000;
+    dio?.options.receiveTimeout = 20 * 1000;
   }
 
   static Future<PersistCookieJar> getCookiePath() async {
@@ -60,7 +60,7 @@ class DioClient {
       Response? response = await dio?.post(endpoint, data: data);
          return response;
     } on DioError catch (e) {
-
+      EasyLoading.dismiss();
         print(e.response?.data);
         AwesomeDialog(
         context: navigator!.context,
@@ -71,7 +71,21 @@ class DioClient {
         desc: e.response?.data['exception'],
         btnOkOnPress: () {},
       ).show();
-    }finally{
+
+    }on Exception catch (e){
+      EasyLoading.dismiss();
+      print(e);
+      AwesomeDialog(
+        context: navigator!.context,
+        dialogType: DialogType.error,
+        animType: AnimType.scale,
+        title: 'Error',
+
+        desc: e.toString(),
+        btnOkOnPress: () {},
+      ).show();
+    }
+    finally{
       EasyLoading.dismiss();
     }
   }
@@ -86,5 +100,52 @@ class DioClient {
     //
     //  // getx.Get.defaultDialog(title: 'Error', middleText: e.toString());
     // }
+  }
+
+  Future<Response?> put(String endpoint, {Map<String, dynamic>? data}) async {
+
+    try {
+      EasyLoading.show(
+          maskType: EasyLoadingMaskType.black,
+          indicator: CircularProgressIndicator(backgroundColor: Colors.white),
+          status: 'Please Wait...');
+      Response? response = await dio?.put(endpoint, data: data);
+      AwesomeDialog(
+        context: navigator!.context,
+        dialogType: DialogType.success,
+        animType: AnimType.scale,
+        title: 'Updated',
+
+        desc: 'Your Document Has Been Updated',
+        btnOkOnPress: () {},
+      ).show();
+      return response;
+    } on DioError catch (e) {
+      print(e.response?.data);
+      AwesomeDialog(
+        context: navigator!.context,
+        dialogType: DialogType.error,
+        animType: AnimType.scale,
+        title: e.response?.statusMessage,
+
+        desc: e.response?.data['exception'],
+        btnOkOnPress: () {},
+      ).show();
+    }on Exception catch (e){
+      print(e);
+      AwesomeDialog(
+        context: navigator!.context,
+        dialogType: DialogType.error,
+        animType: AnimType.scale,
+        title: 'Login Error',
+
+        desc: e.toString(),
+        btnOkOnPress: () {},
+      ).show();
+    }
+    finally{
+      EasyLoading.dismiss();
+    }
+
   }
 }

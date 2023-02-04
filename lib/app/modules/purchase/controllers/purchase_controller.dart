@@ -12,6 +12,7 @@ class PurchaseController extends GetxController {
   //TODO: Implement PurchaseController
   var itemList = <Map<String,dynamic>>[].obs;
 
+
   @override
   void onInit() {
     super.onInit();
@@ -31,6 +32,9 @@ class PurchaseController extends GetxController {
     purchaseList.clear();
     await getPurchases();
   }
+  void reset(){
+    itemList.clear();
+  }
 
 
   getPurchases({int start=0, int length=10}) async{
@@ -49,7 +53,5 @@ class PurchaseController extends GetxController {
     return PurchaseInvoice.fromJson(response?.data);
   }
 
-  void clearItems() {
-    itemList.clear();
-  }
+
 }

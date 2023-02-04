@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:leacc_factory/app/modules/common/api/FrappeAPI.dart';
 import 'package:leacc_factory/app/modules/purchase/controllers/purchase_controller.dart';
 
+import '../../common/util/search_delegate.dart';
 import '../../common/views/list_tile.dart';
 import '../model/purchase_model.dart';
 import 'purchase_view.dart';
@@ -15,8 +17,22 @@ class PurchaseListView extends GetView<PurchaseController> {
     Get.lazyPut(() => PurchaseController());
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Purchases'),
-          centerTitle: true,
+            title: const Text('Purchases'),
+            centerTitle: true,
+            actions:[
+              // Navigate to the Search Screen
+              IconButton(
+                  onPressed: () async{
+                    String purchase_invoice=await showSearch(context: context, delegate: FrappeSearchDelegate(
+                      docType: 'Purchase Invoice',
+                    )
+                    );
+                    PurchaseInvoice purchaseInvoice = await controller.getPurchase(name: purchase_invoice);
+                    Get.to(()=>PurchaseView(purchaseInvoice: purchaseInvoice,));
+                  }
+                  ,
+                  icon: const Icon(Icons.search))
+            ]
 
         ),
         floatingActionButton: FloatingActionButton(
@@ -37,9 +53,10 @@ class PurchaseListView extends GetView<PurchaseController> {
                           child: InkWell(
                             onTap: () async{
                               PurchaseInvoice purchaseInvoice = await controller.getPurchase(name: controller.purchaseList[index]['name']);
-                              Get.to(PurchaseView(purchaseInvoice: purchaseInvoice,));
-                              },
+                              Get.to(()=>PurchaseView(purchaseInvoice: purchaseInvoice,));
+                            },
                             child: FrappeListTile(
+                              status:controller.purchaseList[index]['status'].toString(),
                               date:  controller.purchaseList[index]['posting_date'].toString(),
                               title: controller.purchaseList[index]['supplier'],
                               subtitle: controller.purchaseList[index]['name'],

@@ -14,6 +14,7 @@ void main() async{
   await initApiConfig();
   runApp(
     GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       supportedLocales: const [
         Locale('en'),
       ],

@@ -36,7 +36,7 @@ class ExpenseListView extends GetView<ExpenseController> {
                           child: InkWell(
                             // onTap: ()=>Get.to(()=>ExpenseView(expense: controller.expenseList[index],)),
                             child: FrappeListTile(
-                              //controller.expenseList[index]['posting_date']
+                              status:controller.expenseList[index]['docstatus'].toString(),
                               date:  controller.expenseList[index]['posting_date'].toString(),
                               title: controller.expenseList[index]['title'],
                               subtitle: controller.expenseList[index]['name'],

@@ -1,55 +1,43 @@
 
+import 'package:intl/intl.dart';
 
 import 'sales_item.dart';
 
 class SalesInvoice {
-  // SalesInvoice({
-  //   this.docstatus=0,
-  //   required this.customer,
-  //
-  //   required this.postingDate,
-  //   required this.postingTime,
-  //   required this.dueDate,
-  //   required this.isPos,
-  //   required this.updateStock,
-  //   required this.items,
-  //   required this.payments,
-  // });
+
   SalesInvoice();
   int docStatus=0;
   late final String customer;
-  late final String postingDate;
-  //late final String postingTime;
-//  late final String dueDate;
-  final int isPos=1;
+  late final DateTime postingDate;
+  late String bill_no;
+  String? modified_by;
+  String? posting_time;
   final int updateStock=1;
+  String? name;
   late List<SalesItem> items;
 
-  // SalesInvoice.fromJson(Map<String, dynamic> json){
-  //   docstatus = json['data']['docstatus'];
-  //   customer = json['data']['customer'];
-  //   postingDate = json['data']['posting_date'];
-  //   postingTime = json['data']['posting_time'];
-  //   dueDate = json['data']['due_date'];
+  SalesInvoice.fromJson(Map<String, dynamic> json){
+    name=json['data']['name'];
+    docStatus = json['data']['docstatus'];
 
-  //
-
-  //   isPos = json['data']['is_pos'];
-  //   updateStock = json['data']['update_stock'];
-  //   items = List.from(json['data']['items']).map((e)=>Item.fromJson(e)).toList();
-  //   payments = List.from(json['data']['payments']).map((e)=>SalesPayment.fromJson(e)).toList();
-  // }
+    customer = json['data']['customer'];
+    modified_by=json['data']['modified_by'];
+    bill_no = json['data']['bill_no'];
+    postingDate = DateTime.parse('${json['data']['posting_date']}');
+    posting_time = json['data']['posting_time'];
+    items = List.from(json['data']['items']).map((e)=>SalesItem.fromJson(e)).toList();
+  }
 
   Map<String, dynamic> toJson() {
     final _salesInvoiceData = <String, dynamic>{};
     _salesInvoiceData['docstatus'] = docStatus;
     _salesInvoiceData['customer'] = customer;
-    _salesInvoiceData['posting_date'] = postingDate;
-    //  _salesInvoiceData['posting_time'] = postingTime;
-    // _salesInvoiceData['due_date'] = dueDate;
-    _salesInvoiceData['is_pos'] = isPos;
+    _salesInvoiceData['posting_date'] = postingDate.toString();
+    _salesInvoiceData['bill_no'] = bill_no;
+    _salesInvoiceData['posting_time'] = DateFormat.Hms().format(postingDate);
+    _salesInvoiceData['due_date'] = postingDate.add(const Duration(days: 7)).toString();
     _salesInvoiceData['update_stock'] = updateStock;
-    // _salesInvoiceData['items'] = items.map((e)=>e.toJson()).toList();
+    _salesInvoiceData['items'] = items.map((e)=>e.toJson()).toList();
 
     final data = <String,dynamic>{
       'data':_salesInvoiceData
@@ -58,23 +46,4 @@ class SalesInvoice {
   }
 }
 
-class SalesPayment {
-  SalesPayment({
-    required this.modeOfPayment,
-    required this.amount,
-  });
-  late final String modeOfPayment;
-  late final double amount;
 
-  SalesPayment.fromJson(Map<String, dynamic> json){
-    modeOfPayment = json['mode_of_payment'];
-    amount = json['amount'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _salesInvoiceData = <String, dynamic>{};
-    _salesInvoiceData['mode_of_payment'] = modeOfPayment;
-    _salesInvoiceData['amount'] = amount;
-    return _salesInvoiceData;
-  }
-}

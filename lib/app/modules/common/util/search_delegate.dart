@@ -43,9 +43,10 @@ class FrappeSearchDelegate extends SearchDelegate {
           return ListView.builder(
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(snapshot.data![index].value),
-                subtitle: Text(snapshot.data![index].description),
+                title: Text(snapshot.data?[index].value ??''),
+                subtitle: Text(snapshot.data?[index].description??''),
                 onTap: () {
+
                   close(context, snapshot.data![index].value);
                 },
               );

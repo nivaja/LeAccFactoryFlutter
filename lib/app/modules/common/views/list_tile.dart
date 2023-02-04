@@ -9,8 +9,9 @@ class FrappeListTile extends StatelessWidget {
   String? image;
   String trailingText;
   Color? trailingTextColor;
+  String status;
 
-  FrappeListTile({required this.title, required this. subtitle,required this.trailingText, this.date,this.image, this.trailingTextColor});
+  FrappeListTile({Key? key, required this.title, required this. subtitle,required this.trailingText, this.date,this.image, this.trailingTextColor,required this.status}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +41,12 @@ class FrappeListTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-          Chip(
-            backgroundColor: Colors.greenAccent,
-              label: Text('Test')
+          FilterChip(
+            backgroundColor: Colors.transparent,
+            shape: StadiumBorder(side: BorderSide(color:Colors.blue[600]!,style: BorderStyle.none),),
+              label: Text(status,style: TextStyle(color: Colors.blue[600],fontSize: 10)), onSelected: (bool value) {  },
           ),
-          Text(trailingText, style: TextStyle(fontWeight: FontWeight.bold, color: trailingTextColor??Colors.blue[600]),),
+          Flexible(child: Text(trailingText, style: TextStyle(fontWeight: FontWeight.bold, color: trailingTextColor??Colors.blue[600]),)),
         ],),
       ),
       subtitle: Text(subtitle),

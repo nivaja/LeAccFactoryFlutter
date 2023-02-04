@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:leacc_factory/app/modules/sales/views/sales_list_view.dart';
 
 import '../modules/expense/bindings/expense_binding.dart';
 import '../modules/expense/views/expense_list_view.dart';
@@ -42,6 +43,11 @@ class AppPages {
     GetPage(
       name: _Paths.SALES,
       page: () => SalesView(),
+      binding: SalesBinding(),
+    ),
+    GetPage(
+      name: _Paths.SALES,
+      page: () => SalesListView(),
       binding: SalesBinding(),
     ),
     GetPage(

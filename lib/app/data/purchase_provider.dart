@@ -9,7 +9,7 @@ import '../modules/http/dio.dart';
 import '../modules/purchase/model/purchase_model.dart';
 
 class PurchaseProvider{
-  savePurchase(PurchaseInvoice purchaseInvoice) async{
+  Future<String?> savePurchase(PurchaseInvoice purchaseInvoice) async{
     print(purchaseInvoice.toJson());
     Response? response = await DioClient().post('/resource/Purchase Invoice',data:purchaseInvoice.toJson());
     if (response!.statusCode ==200){
@@ -21,6 +21,7 @@ class PurchaseProvider{
         desc: 'Your Purchase Has Been Saved',
         btnOkOnPress: () {},
       ).show();
+      return response.data['data']['name'];
     }
 
   }
@@ -29,7 +30,7 @@ class PurchaseProvider{
       Response? result = await DioClient().get('/resource/Purchase Invoice',queryParameters: {
         "limit_page_length":length,// returns 20 records at a time
         "limit_start":start, //Starting index of the record
-        "fields":jsonEncode(["name","docstatus","supplier","total","posting_date","modified","purchase_bill_no","total_qty"]) // reuturns listed fields data
+        "fields":jsonEncode(["name","docstatus","supplier","total","posting_date","modified","purchase_bill_no","total_qty","status"]) // reuturns listed fields data
       });
       return List.from(result?.data['data']).map((e) => e as Map<String,dynamic>).toList();
   }

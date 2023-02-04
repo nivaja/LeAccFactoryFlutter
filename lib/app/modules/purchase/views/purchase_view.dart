@@ -4,12 +4,14 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 
 import 'package:get/get.dart';
 import 'package:leacc_factory/app/data/purchase_provider.dart';
+import 'package:leacc_factory/app/modules/common/api/FrappeAPI.dart';
+
 import 'package:leacc_factory/app/modules/purchase/model/purchase_model.dart';
-import 'package:leacc_factory/app/modules/sales/model/sales_item.dart';
 
 import '../../common/util/search_delegate.dart';
+import '../../sales/model/sales_item.dart';
 import '../controllers/purchase_controller.dart';
-
+import 'package:intl/intl.dart';
 class PurchaseView extends GetView<PurchaseController> {
   PurchaseInvoice? purchaseInvoice;
   final _formKey = GlobalKey<FormBuilderState>();
@@ -27,33 +29,45 @@ class PurchaseView extends GetView<PurchaseController> {
           title: Text('New Purchase'),
         ),
         body: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: FormBuilder(
             key: _formKey,
             initialValue:  purchaseInvoice!=null?
             {
               'posting_date':purchaseInvoice!.postingDate,
               'supplier':purchaseInvoice!.supplier,
-              'purchase_bill_no':purchaseInvoice!.purchase_bill_no
+              'purchase_bill_no':purchaseInvoice!.purchase_bill_no,
+              'modified_by':purchaseInvoice!.modified_by,
+              'posting_time':purchaseInvoice!.posting_time
             }:{
               'posting_date':DateTime.now(),
             },
             enabled: purchaseInvoice!=null?false:true,
             child: ListView(
-              itemExtent: 100,
+              shrinkWrap: true,
               children: [
-                FormBuilderDateTimePicker(
-                  name: 'posting_date',
-                  initialEntryMode: DatePickerEntryMode.calendar,
-                  inputType: InputType.both,
-                  valueTransformer: (val){
-                    return val!.toString();
-                  },
-                  decoration: FrappeInputDecoration(
-                      label: 'Posting Date',
-                      fieldIcons: const Icon(Icons.date_range)
-                  ) ,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: FormBuilderDateTimePicker(
+                        name: 'posting_date',
+                        initialEntryMode: DatePickerEntryMode.calendar,
+                        inputType: InputType.both,
+                        valueTransformer: (val){
+                          return val!.toString();
+                        },
+                        decoration: FrappeInputDecoration(
+                            label: 'Posting Date',
+                            fieldIcons: const Icon(Icons.date_range)
+                        ) ,
+                      ),
+                    ),
+                    purchaseInvoice!=null?Expanded(child: FormBuilderTextField(name: 'posting_time',decoration: InputDecoration(border: OutlineInputBorder(),filled: true),))
+                        :SizedBox.shrink()
+                  ],
                 ),
+                SizedBox(height: 15,),
                 FormBuilderTextField(
                   name: 'supplier',
                   validator: FormBuilderValidators.required(),
@@ -73,7 +87,7 @@ class PurchaseView extends GetView<PurchaseController> {
                   },
                 ),
 
-
+                SizedBox(height: 15,),
                 FormBuilderTextField(
                     name: 'purchase_bill_no',
                     validator: FormBuilderValidators.required(),
@@ -82,6 +96,19 @@ class PurchaseView extends GetView<PurchaseController> {
                         fieldIcons: const Icon(Icons.numbers)
                     )
                 ),
+                SizedBox(height: 15,),
+                purchaseInvoice==null?
+                SizedBox.shrink()
+                    :
+                FormBuilderTextField(
+                    name: 'modified_by',
+                    validator: FormBuilderValidators.required(),
+                    decoration: FrappeInputDecoration(
+                        label: 'Modified By',
+                        fieldIcons: const Icon(Icons.verified_user_outlined)
+                    )
+                ),
+                SizedBox(height: 15,),
 
                 purchaseInvoice==null?
                 OutlinedButton(
@@ -89,7 +116,7 @@ class PurchaseView extends GetView<PurchaseController> {
                     Get.dialog(
                         AlertDialog(
                           title: const Text('Dialog'),
-                          content: ItemForm(_itemFormKey,context),
+                          content: ItemForm(formKey: _itemFormKey,context: context),
                         )
                     );
                   },
@@ -99,64 +126,101 @@ class PurchaseView extends GetView<PurchaseController> {
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary),
                   ),
-                ):
-                    SizedBox.shrink(),
+
+                )
+                    :
+                SizedBox.shrink(),
+                SizedBox(height: 15,),
                 Container(
+                  height: 400,
                   child:
                   purchaseInvoice!=null?
                   ListView.builder(
+                    shrinkWrap: true,
                     itemCount: purchaseInvoice!.items.length,
                     itemBuilder: (BuildContext context,int index){
                       return ListTile(
-                          leading: const Icon(Icons.list),
-                          trailing: Text(
-                              (purchaseInvoice!.items[index].rate * purchaseInvoice!.items[index].qty).toString(),
-
-                            style: TextStyle(color: Colors.green, fontSize: 15),
-                          ),
-                          title: Text("${purchaseInvoice!.items[index].itemCode} ,${purchaseInvoice!.items[index].rate},${purchaseInvoice!.items[index].qty}"));
+                          tileColor: Colors.grey[300],
+                          trailing: Text((purchaseInvoice!.items[index].rate * purchaseInvoice!.items[index].qty).toString()),
+                          leading: Text(purchaseInvoice!.items[index].itemCode,textAlign: TextAlign.center),
+                          title:Text(purchaseInvoice!.items[index].itemName??''),
+                          subtitle: Text('Rate: ${purchaseInvoice!.items[index].rate} * Qty: ${purchaseInvoice!.items[index].qty}')
+                      );
                     },
                   )
 
-                  :Obx(()=>
+                      :Obx(()=>
                       ListView.builder(
+                        shrinkWrap: true,
                         itemCount: controller.itemList.length,
                         itemBuilder: (BuildContext context,int index){
-                          return ListTile(
-                              leading: const Icon(Icons.list),
-                              trailing: Text(
-                                (controller.itemList[index]['rate'] *controller.itemList[index]['qty']).toString(),
-                                style: TextStyle(color: Colors.green, fontSize: 15),
+                          return Container(
+                            margin: EdgeInsets.fromLTRB(0, 10, 0,0),
+                            child: Dismissible(
+                              key: Key(controller.itemList[index].toString()),
+                              onDismissed: (direction){
+                                controller.itemList.removeAt(index);
+                              },
+                              child: ListTile(
+                                  onTap: (){
+                                    Get.dialog(
+                                        AlertDialog(
+                                          title: const Text('Edit'),
+                                          content: ItemForm(formKey: _itemFormKey,context: context,salesItem:SalesItem.fromJson(controller.itemList[index]),index: index ),
+                                        )
+                                    );
+                                  },
+                                  tileColor: Colors.grey[300],
+                                  trailing: Text((controller.itemList[index]['rate'] * controller.itemList[index]['qty']).toString()),
+                                  leading: Text(controller.itemList[index]['item_code'],textAlign: TextAlign.center),
+                                  title:Text(controller.itemList[index]['item_code']),
+                                  subtitle: Text('Rate: ${controller.itemList[index]['rate']} * Qty: ${controller.itemList[index]['qty']}')
                               ),
-                              title: Text("${controller.itemList[index]['item_code']} , ${controller.itemList[index]['rate']},${controller.itemList[index]['qty']}"));
+                            ),
+                          );
                         },
                       ),
                   ),
                 ),
-                purchaseInvoice!=null?
-                    SizedBox.shrink():
+                SizedBox(height: 15,),
+
+                purchaseInvoice!=null ?
+                purchaseInvoice!.docStatus != 0 ?
+                SizedBox.shrink():
+                ElevatedButton(
+
+                  onPressed: (){
+                    FrappeAPI.updateDoc(docType: 'Purchase Invoice', name: purchaseInvoice!.name!, data: {"data":{"docstatus":1}});
+                  },
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+                    :
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: ()async{
                           if (_formKey.currentState?.saveAndValidate() ?? false) {
                             print(_formKey.currentState?.value);
                             var data = new Map.from(_formKey.currentState!.value);
                             data['items']=controller.itemList;
                             print(data);
-                            PurchaseProvider().savePurchase(PurchaseInvoice.fromJson({
+                            await PurchaseProvider().savePurchase(PurchaseInvoice.fromJson({
                               'data':data
-                            })
+                             })
                             );
-
+                            _formKey.currentState?.reset();
+                            controller.reset();
                           } else {
                             print(_formKey.currentState?.value);
                             debugPrint('validation failed');
                           }
                         },
                         child: const Text(
-                          'Submit',
+                          'Save',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -166,7 +230,7 @@ class PurchaseView extends GetView<PurchaseController> {
                       child: OutlinedButton(
                         onPressed: () {
                           _formKey.currentState?.reset();
-                          controller.clearItems();
+                          controller.reset();
                         },
                         // color: Theme.of(context).colorScheme.secondary,
                         child: Text(
@@ -203,9 +267,13 @@ class PurchaseView extends GetView<PurchaseController> {
     );
   }
 
-  Widget ItemForm(GlobalKey<FormBuilderState> formKey,BuildContext context){
+  Widget ItemForm({required GlobalKey<FormBuilderState> formKey,
+    required BuildContext context,
+    SalesItem? salesItem, int? index}){
+
     return FormBuilder(
       key: formKey,
+      initialValue: salesItem?.toJson().map((key, value) => MapEntry(key, value.toString())) ?? {},
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -274,7 +342,6 @@ class PurchaseView extends GetView<PurchaseController> {
           ),
           FormBuilderTextField(
               name: 'amount',
-              initialValue: '0',
               readOnly: true,
               valueTransformer: (val){
                 return double.tryParse(val!);
@@ -293,12 +360,28 @@ class PurchaseView extends GetView<PurchaseController> {
           Row(
             children: <Widget>[
               Expanded(
-                child: ElevatedButton(
+                child: salesItem !=null?ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState?.saveAndValidate() ?? false) {
+                      print(formKey.currentState?.value);
+                      controller.itemList[index!]=(formKey.currentState!.value);
+                      Navigator.pop(context);
+                    } else {
+                      print(formKey.currentState?.value);
+                      debugPrint('validation failed');
+                    }
+                  },
+                  child: const Text(
+                    'Edit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ):
+                ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState?.saveAndValidate() ?? false) {
                       print(formKey.currentState?.value);
                       controller.itemList.add(formKey.currentState!.value);
-
+                      Navigator.pop(context);
                     } else {
                       print(formKey.currentState?.value);
                       debugPrint('validation failed');
