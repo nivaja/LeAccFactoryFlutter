@@ -21,7 +21,7 @@ int updateStock=1;
     docStatus = json['data']['docstatus'];
     modified_by=json['data']['modified_by'];
     supplier = json['data']['supplier'];
-    purchase_bill_no = json['data']['purchase_bill_no'];
+    purchase_bill_no = json['data']['purchase_bill_no']??'';
     postingDate = DateTime.parse('${json['data']['posting_date']}');
     posting_time= json['data']['posting_time'];
     items =List.from(json['data']['items']).map((e) => SalesItem.fromJson(e)).toList();

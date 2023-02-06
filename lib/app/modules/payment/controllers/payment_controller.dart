@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:leacc_factory/app/data/payment_provider.dart';
+import 'package:leacc_factory/app/modules/payment/model/PaymentEntryModel.dart';
+
+import '../../common/api/FrappeAPI.dart';
 
 
 class PaymentController extends GetxController {
@@ -39,5 +42,10 @@ class PaymentController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  Future<Map<String,dynamic>> getPayment({required String name}) async{
+    var response = await FrappeAPI.getDetail(docType: 'Payment Entry', name: name);
+    return response!.data['data'] as Map<String,dynamic>;
   }
 }

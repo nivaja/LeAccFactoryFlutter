@@ -70,6 +70,7 @@ class PurchaseView extends GetView<PurchaseController> {
                 SizedBox(height: 15,),
                 FormBuilderTextField(
                   name: 'supplier',
+                  readOnly: true,
                   validator: FormBuilderValidators.required(),
                   decoration: FrappeInputDecoration(
                       label: 'Supplier',

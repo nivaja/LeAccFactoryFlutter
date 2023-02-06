@@ -43,7 +43,7 @@ class SalesListView extends GetView<SalesController> {
             LazyLoadScrollView(
               onEndOfPage:()=> controller.endOfReults.value ?Get.snackbar('End of Results', '')
                   : controller.getSaless(start: controller.salesList.length),
-              child: RefreshIndicator(
+              child:   RefreshIndicator(
                   onRefresh: () async =>  controller.refresh(),
                   child: ListView.builder(
                       shrinkWrap: true,

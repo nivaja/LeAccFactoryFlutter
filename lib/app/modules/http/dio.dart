@@ -68,7 +68,7 @@ class DioClient {
         animType: AnimType.scale,
         title: e.response?.statusMessage,
 
-        desc: e.response?.data['exception'],
+        desc: e.response?.data['message'],
         btnOkOnPress: () {},
       ).show();
 

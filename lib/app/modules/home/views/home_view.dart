@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
 import 'package:leacc_factory/app/modules/preference/views/preference_view.dart';
 import 'package:leacc_factory/app/modules/sales/views/sales_list_view.dart';
 
@@ -33,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: IndexedStack(
+      body: LazyLoadIndexedStack(
         index: currentIndex,
         children: widgetOptions,
       ),

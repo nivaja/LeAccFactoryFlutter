@@ -8,6 +8,7 @@ import 'package:leacc_factory/app/data/payment_provider.dart';
 import 'package:leacc_factory/app/modules/payment/controllers/payment_controller.dart';
 import 'package:leacc_factory/app/modules/payment/model/PaymentEntryModel.dart';
 
+import '../../common/api/FrappeAPI.dart';
 import '../../common/util/search_delegate.dart';
 
 
@@ -131,19 +132,42 @@ class PaymentView extends GetView<PaymentController> {
                         fieldIcons: const Icon(Icons.attach_money)
                     )
                 ),
+                payment==null?
+                SizedBox.shrink()
+                    :
+                FormBuilderTextField(
+                    name: 'modified_by',
+                    validator: FormBuilderValidators.required(),
+                    decoration: FrappeInputDecoration(
+                        label: 'Modified By',
+                        fieldIcons: const Icon(Icons.verified_user_outlined)
+                    )
+                ),
                 payment!=null?
-                    SizedBox.shrink():
+                payment!['docstatus'] != 0 ?
+                SizedBox.shrink():
+                ElevatedButton(
+
+                  onPressed: (){
+                    FrappeAPI.updateDoc(docType: 'Payment Entry', name: payment!['name']!, data: {"data":{"docstatus":1}});
+                  },
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ):
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async{
                           if (_formKey.currentState?.saveAndValidate() ?? false) {
                             print(_formKey.currentState?.value);
                             Map<String,dynamic> data = new Map.from(_formKey.currentState!.value);
                             data['party_type']= _formKey.currentState!.fields['payment_type']!.value == "Pay" ? "Supplier":"Customer";
                             print(data);
-                            PaymentProvider().savePaymentEntry(PaymentEnterModel.fromJson(data));
+                            await PaymentProvider().savePaymentEntry(PaymentEnterModel.fromJson(data));
+                            _formKey.currentState?.reset();
                           } else {
                             print(_formKey.currentState?.value);
                             debugPrint('validation failed');

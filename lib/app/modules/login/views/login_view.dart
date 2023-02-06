@@ -18,13 +18,10 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('LoginView'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(45.0),
-        child: Expanded(
+
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
           child: FormBuilder(
             key: _formKey,
             child: ListView(
@@ -78,28 +75,26 @@ class LoginView extends GetView<LoginController> {
                 ,
                 SizedBox(height: 15,),
 
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async{
-                      if (_formKey.currentState?.saveAndValidate() ?? false) {
-                        dio.Response? response = await LoginProvider().post(server: _formKey.currentState?.value['server'],
-                            usr:_formKey.currentState?.value['usr'],
-                          pwd: _formKey.currentState?.value['pwd']
+                ElevatedButton(
+                  onPressed: () async{
+                    if (_formKey.currentState?.saveAndValidate() ?? false) {
+                      dio.Response? response = await LoginProvider().post(server: _formKey.currentState?.value['server'],
+                          usr:_formKey.currentState?.value['usr'],
+                        pwd: _formKey.currentState?.value['pwd']
 
-                        );
-                        if(response != null){
-                          Get.offAll(HomeView());
-                        }
-
-                      } else {
-                        print(_formKey.currentState?.value);
-                        debugPrint('validation failed');
+                      );
+                      if(response != null){
+                        Get.offAll(HomeView());
                       }
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(color: Colors.white),
-                    ),
+
+                    } else {
+                      print(_formKey.currentState?.value);
+                      debugPrint('validation failed');
+                    }
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ],

@@ -71,6 +71,7 @@ class SalesView extends GetView<SalesController> {
                 SizedBox(height: 15,),
                 FormBuilderTextField(
                   name: 'customer',
+                  readOnly: true,
                   validator: FormBuilderValidators.required(),
                   decoration: FrappeInputDecoration(
                       label: 'Customer',

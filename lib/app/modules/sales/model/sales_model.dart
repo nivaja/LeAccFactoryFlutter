@@ -18,11 +18,10 @@ class SalesInvoice {
 
   SalesInvoice.fromJson(Map<String, dynamic> json){
     name=json['data']['name'];
-    docStatus = json['data']['docstatus'];
 
     customer = json['data']['customer'];
     modified_by=json['data']['modified_by'];
-    bill_no = json['data']['bill_no'];
+    bill_no = json['data']['bill_no']??'';
     postingDate = DateTime.parse('${json['data']['posting_date']}');
     posting_time = json['data']['posting_time'];
     items = List.from(json['data']['items']).map((e)=>SalesItem.fromJson(e)).toList();

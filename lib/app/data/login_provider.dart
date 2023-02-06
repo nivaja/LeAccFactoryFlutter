@@ -9,10 +9,14 @@ class LoginProvider{
       'usr':usr,
       'pwd':pwd
     };
+    await setBaseUrl(server);
     Response? response = await DioClient().post('$server/api/method/login',data: data);
-    if(response!.statusCode == 200){
-      await setBaseUrl(server);
-      return response;
-    }
+      if(response?.statusCode == 200){
+
+        return response;
+    }else {
+        await clearConfigStorage();
+      }
+
   }
 }

@@ -13,3 +13,7 @@ setBaseUrl(String baseUrl) async{
   await GetStorage('Config').write('baseUrl', '$baseUrl');
   await DioClient.init('$baseUrl/api');
 }
+
+clearConfigStorage() async{
+  await GetStorage('Config').remove('baseUrl');
+}

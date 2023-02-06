@@ -3,8 +3,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:leacc_factory/app/modules/payment/controllers/payment_controller.dart';
+import 'package:leacc_factory/app/modules/payment/model/PaymentEntryModel.dart';
 import 'package:leacc_factory/app/modules/payment/views/payment_view.dart';
 import 'package:intl/intl.dart';
+import '../../common/util/search_delegate.dart';
 import '../../common/views/list_tile.dart';
 
 class PaymentListView extends GetView<PaymentController> {
@@ -18,6 +20,20 @@ class PaymentListView extends GetView<PaymentController> {
         appBar: AppBar(
           title: const Text('Payments'),
           centerTitle: true,
+            actions:[
+              // Navigate to the Search Screen
+              IconButton(
+                  onPressed: () async{
+                    String payment=await showSearch(context: context, delegate: FrappeSearchDelegate(
+                      docType: 'Payment Entry',
+                    )
+                    );
+                    var paymentMap =await controller.getPayment(name: payment);
+                    Get.to(()=>PaymentView(payment: paymentMap));
+                  }
+                  ,
+                  icon: const Icon(Icons.search))
+            ]
 
         ),
         floatingActionButton: FloatingActionButton(
