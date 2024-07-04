@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:leacc_factory/app/modules/http/dio.dart';
 
 class FrappeGet {
@@ -28,7 +29,12 @@ class FrappeGet {
       queryParams['filters']=jsonEncode(filters);
     }
     Response? result = await DioClient().get('/method/frappe.desk.search.search_link',queryParameters: queryParams);
-    return List.from(result?.data['results']).map((e)=>DropDownItem(e['value'], e['description'])).toList();
+    var message = result?.data['message'];
+    return message != null
+        ? List.from(message)
+        .map((e) => DropDownItem(e['value'], e['description']))
+        .toList()
+        : [];
   }
 
 

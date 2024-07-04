@@ -29,7 +29,7 @@ class PaymentProvider{
 
   Future<List<String>> getPaymentAccountList() async{
     Response? result = await DioClient().get('/method/frappe.desk.search.search_link?txt=&doctype=Account&ignore_user_permissions=0&reference_doctype=Payment+Entry&filters=%7B%22account_type%22%3A%5B%22in%22%2C%5B%22Bank%22%2C%22Cash%22%5D%5D%2C%22is_group%22%3A0%7D');
-    return List.from(result?.data['results']).map((e) => e['value'].toString()).toList();
+    return List.from(result?.data['message']).map((e) => e['value'].toString()).toList();
   }
 
   Future<List<Map<String,dynamic>>> getPayments(int start, int length) async{
