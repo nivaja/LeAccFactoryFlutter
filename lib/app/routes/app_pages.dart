@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:leacc_factory/app/modules/sales/views/sales_list_view.dart';
 
 import '../modules/expense/bindings/expense_binding.dart';
 import '../modules/expense/views/expense_list_view.dart';
@@ -13,12 +12,15 @@ import '../modules/login/views/login_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_list_view.dart';
 import '../modules/payment/views/payment_view.dart';
+import '../modules/payroll/bindings/payroll_binding.dart';
+import '../modules/payroll/views/payroll_view.dart';
 import '../modules/preference/bindings/preference_binding.dart';
 import '../modules/preference/views/preference_view.dart';
 import '../modules/purchase/bindings/purchase_binding.dart';
 import '../modules/purchase/views/purchase_list_view.dart';
 import '../modules/purchase/views/purchase_view.dart';
 import '../modules/sales/bindings/sales_binding.dart';
+import '../modules/sales/views/sales_list_view.dart';
 import '../modules/sales/views/sales_view.dart';
 
 part 'app_routes.dart';
@@ -84,6 +86,11 @@ class AppPages {
       name: _Paths.PREFERENCE,
       page: () => const PreferenceView(),
       binding: PreferenceBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAYROLL,
+      page: () => const PayrollView(),
+      binding: PayrollBinding(),
     ),
   ];
 }

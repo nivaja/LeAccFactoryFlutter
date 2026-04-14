@@ -13,6 +13,7 @@ abstract class Routes {
   static const PURCHASE = _Paths.PURCHASE;
   static const PURCHASE_LIST = _Paths.PURCHASE_LIST;
   static const PREFERENCE = _Paths.PREFERENCE;
+  static const PAYROLL = _Paths.PAYROLL;
 }
 
 abstract class _Paths {
@@ -28,4 +29,5 @@ abstract class _Paths {
   static const PURCHASE = '/purchase';
   static const PURCHASE_LIST = '/purchase_list';
   static const PREFERENCE = '/preference';
+  static const PAYROLL = '/payroll';
 }

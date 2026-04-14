@@ -5,8 +5,8 @@
 import FlutterMacOS
 import Foundation
 
-import path_provider_macos
+import rive_native
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+  RiveNativePlugin.register(with: registry.registrar(forPlugin: "RiveNativePlugin"))
 }

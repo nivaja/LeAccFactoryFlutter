@@ -30,7 +30,8 @@ class PurchaseProvider{
       Response? result = await DioClient().get('/resource/Purchase Invoice',queryParameters: {
         "limit_page_length":length,// returns 20 records at a time
         "limit_start":start, //Starting index of the record
-        "fields":jsonEncode(["name","docstatus","supplier","total","posting_date","modified","purchase_bill_no","total_qty","status"]) // reuturns listed fields data
+        "fields":jsonEncode(["name","docstatus","supplier","total","posting_date","modified","purchase_bill_no","total_qty","status"]), // reuturns listed fields data
+        "order_by": "modified desc"
       });
       return List.from(result?.data['data']).map((e) => e as Map<String,dynamic>).toList();
   }

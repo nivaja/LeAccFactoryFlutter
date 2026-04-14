@@ -8,13 +8,14 @@ class FrappeActionButton extends StatelessWidget {
   Icon? buttonIcons;
   Function onPressed;
 
-  FrappeActionButton(
-      { required this.buttonText,
-      required this.onPressed,
-      // required this.actionButtonWidth,
-      // required this.actionButtonHeight,
-      this.buttonIcons,
-      this.iconDirectionForButton});
+  FrappeActionButton({
+    required this.buttonText,
+    required this.onPressed,
+    // required this.actionButtonWidth,
+    // required this.actionButtonHeight,
+    this.buttonIcons,
+    this.iconDirectionForButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +34,22 @@ class FrappeActionButton extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue[600],
+                    backgroundColor: Colors.blue[600],
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9)),
+                      borderRadius: BorderRadius.circular(9),
+                    ),
                   ),
                 ),
               )
             : ElevatedButton(
-                onPressed:()=> onPressed(),
+                onPressed: () => onPressed(),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[600],
+                  backgroundColor: Colors.blue[600],
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9)),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
                 ),
-                child: Text(
-                  buttonText,
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: Text(buttonText, style: TextStyle(color: Colors.white)),
               ),
       ),
     );

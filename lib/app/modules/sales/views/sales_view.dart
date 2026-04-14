@@ -48,7 +48,7 @@ class SalesView extends GetView<SalesController> {
               shrinkWrap: true,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: FormBuilderDateTimePicker(
@@ -68,7 +68,6 @@ class SalesView extends GetView<SalesController> {
                         :SizedBox.shrink()
                   ],
                 ),
-                SizedBox(height: 15,),
                 FormBuilderTextField(
                   name: 'customer',
                   readOnly: true,
@@ -196,7 +195,7 @@ class SalesView extends GetView<SalesController> {
                   },
                   child: const Text(
                     'Submit',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blueAccent),
                   ),
                 )
                     :
@@ -223,7 +222,7 @@ class SalesView extends GetView<SalesController> {
                         },
                         child: const Text(
                           'Save',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blueAccent),
                         ),
                       ),
                     ),
@@ -391,7 +390,7 @@ class SalesView extends GetView<SalesController> {
                   },
                   child: const Text(
                     'Add Item',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blueAccent),
                   ),
                 ),
               ),

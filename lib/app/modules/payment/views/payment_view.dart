@@ -175,7 +175,7 @@ class PaymentView extends GetView<PaymentController> {
                         },
                         child: const Text(
                           'Submit',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blueAccent),
                         ),
                       ),
                     ),

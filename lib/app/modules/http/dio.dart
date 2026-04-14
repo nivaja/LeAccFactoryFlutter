@@ -27,21 +27,25 @@ class DioClient {
     var cookieJar = await getCookiePath();
     dio = Dio(BaseOptions(baseUrl: baseUrl))
       ..interceptors.addAll([CookieManager(cookieJar), DioInterceptor()]);
-    dio?.options.connectTimeout = 20 * 1000;
-    dio?.options.receiveTimeout = 20 * 1000;
+    dio?.options.connectTimeout = Duration(milliseconds: 20 * 1000);
+    dio?.options.receiveTimeout = Duration(milliseconds: 20 * 1000);
   }
 
   static Future<PersistCookieJar> getCookiePath() async {
     Directory appDocDir = await getApplicationSupportDirectory();
     String appDocPath = appDocDir.path;
     return PersistCookieJar(
-        ignoreExpires: true, storage: FileStorage("$appDocPath/.cookies/"));
+      ignoreExpires: true,
+      storage: FileStorage("$appDocPath/.cookies/"),
+    );
   }
 
   static Future<String?> getCookies() async {
     var cookieJar = await getCookiePath();
     if (GetStorage('Config').read('baseUrl') != null) {
-      var cookies = await cookieJar.loadForRequest(Uri.parse(GetStorage('Config').read('baseUrl')));
+      var cookies = await cookieJar.loadForRequest(
+        Uri.parse(GetStorage('Config').read('baseUrl')),
+      );
 
       var cookie = CookieManager.getCookies(cookies);
 
@@ -54,15 +58,16 @@ class DioClient {
   Future<Response?> post(String endpoint, {Map<String, dynamic>? data}) async {
     try {
       EasyLoading.show(
-          maskType: EasyLoadingMaskType.black,
-          indicator: CircularProgressIndicator(backgroundColor: Colors.white),
-          status: 'Please Wait...');
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator(backgroundColor: Colors.white),
+        status: 'Please Wait...',
+      );
       Response? response = await dio?.post(endpoint, data: data);
-         return response;
-    } on DioError catch (e) {
+      return response;
+    } on DioException catch (e) {
       EasyLoading.dismiss();
-        print(e.response?.data);
-        AwesomeDialog(
+      print(e.response?.data);
+      AwesomeDialog(
         context: navigator!.context,
         dialogType: DialogType.error,
         animType: AnimType.scale,
@@ -71,8 +76,7 @@ class DioClient {
         desc: e.response?.data['message'],
         btnOkOnPress: () {},
       ).show();
-
-    }on Exception catch (e){
+    } on Exception catch (e) {
       EasyLoading.dismiss();
       print(e);
       AwesomeDialog(
@@ -84,17 +88,22 @@ class DioClient {
         desc: e.toString(),
         btnOkOnPress: () {},
       ).show();
-    }
-    finally{
+    } finally {
       EasyLoading.dismiss();
     }
   }
 
-  Future<Response?> get(String endpoint, {Map<String, dynamic>? queryParameters}) async {
-//    try {
-      Response? response = await dio?.get(endpoint, queryParameters: queryParameters);
-      print(response);
-      return response;
+  Future<Response?> get(
+    String endpoint, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    //    try {
+    Response? response = await dio?.get(
+      endpoint,
+      queryParameters: queryParameters,
+    );
+    print(response);
+    return response;
     // } on Exception catch (e) {
     //   print(e.toString());
     //
@@ -103,12 +112,12 @@ class DioClient {
   }
 
   Future<Response?> put(String endpoint, {Map<String, dynamic>? data}) async {
-
     try {
       EasyLoading.show(
-          maskType: EasyLoadingMaskType.black,
-          indicator: CircularProgressIndicator(backgroundColor: Colors.white),
-          status: 'Please Wait...');
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator(backgroundColor: Colors.white),
+        status: 'Please Wait...',
+      );
       Response? response = await dio?.put(endpoint, data: data);
       AwesomeDialog(
         context: navigator!.context,
@@ -120,7 +129,7 @@ class DioClient {
         btnOkOnPress: () {},
       ).show();
       return response;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e.response?.data);
       AwesomeDialog(
         context: navigator!.context,
@@ -131,7 +140,7 @@ class DioClient {
         desc: e.response?.data['exception'],
         btnOkOnPress: () {},
       ).show();
-    }on Exception catch (e){
+    } on Exception catch (e) {
       print(e);
       AwesomeDialog(
         context: navigator!.context,
@@ -142,10 +151,8 @@ class DioClient {
         desc: e.toString(),
         btnOkOnPress: () {},
       ).show();
-    }
-    finally{
+    } finally {
       EasyLoading.dismiss();
     }
-
   }
 }

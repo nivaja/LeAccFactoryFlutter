@@ -36,7 +36,8 @@ class ExpenseProvider {
       "limit_page_length":length,// returns 20 records at a time
       "limit_start":start, //Starting index of the record
       // "order_by":"name", //Orders records based on given field
-      "fields":jsonEncode(["name","docstatus","title","total_credit","posting_date","modified"]) // reuturns listed fields data
+      "fields":jsonEncode(["name","docstatus","title","total_credit","posting_date","modified"]), // reuturns listed fields data
+      "order_by": "modified desc"
       //"filters":[["posting_date", "=", "2022-06-21"]] //returns data matching filter query
     });
     return List.from(result?.data['data']).map((e) => e as Map<String,dynamic>).toList();

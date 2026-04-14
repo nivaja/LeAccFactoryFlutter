@@ -5,23 +5,25 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
 import 'package:get/get_navigation/src/extension_navigation.dart';
 
-class DioInterceptor extends InterceptorsWrapper{
+class DioInterceptor extends InterceptorsWrapper {
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     print(err.stackTrace.toString());
     super.onError(err, handler);
   }
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    print("Resquest --> "+jsonEncode(options.data));
-    print("Resquest Params --> "+jsonEncode(options.queryParameters.toString()));
-    super.onRequest(options,handler);
+    print("Resquest --> " + jsonEncode(options.data));
+    print(
+      "Resquest Params --> " + jsonEncode(options.queryParameters.toString()),
+    );
+    super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print("Response --> "+response.data.toString());
+    print("Response --> " + response.data.toString());
     // if (
     //     response.data != null &&
     //     response.data["message"] != null) {
@@ -31,33 +33,33 @@ class DioInterceptor extends InterceptorsWrapper{
     //   );
     //
     // }
-    switch(response.statusCode){
+    switch (response.statusCode) {
       case 500:
-          AwesomeDialog(
-            context: navigator!.context,
-            dialogType: DialogType.success,
-            animType: AnimType.scale,
-            title: response.statusMessage.toString() + response.data['exception'],
-            desc: response.data["_server_messages"].toString(),
-            btnOkOnPress: () {},
-          ).show();
-          break;
+        AwesomeDialog(
+          context: navigator!.context,
+          dialogType: DialogType.success,
+          animType: AnimType.scale,
+          title: response.statusMessage.toString() + response.data['exception'],
+          desc: response.data["_server_messages"].toString(),
+          btnOkOnPress: () {},
+        ).show();
+        break;
 
       case 201:
-        getDialog('Created'); break;
+        getDialog('Created');
+        break;
       case 401:
         print(response.data);
-        getDialog(response.statusMessage);break;
+        getDialog(response.statusMessage);
+        break;
       case 400:
-        getDialog(response.statusMessage);break;
+        getDialog(response.statusMessage);
+        break;
     }
     super.onResponse(response, handler);
   }
 
-  getDialog(String? msg){
-    return getx.Get.defaultDialog(
-        title: msg??'Error',
-
-    );
+  getDialog(String? msg) {
+    return getx.Get.defaultDialog(title: msg ?? 'Error');
   }
 }

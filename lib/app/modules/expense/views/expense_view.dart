@@ -136,6 +136,7 @@ class ExpenseView extends GetView<ExpenseController> {
                           if (_formKey.currentState?.saveAndValidate() ?? false) {
                             print({'data':_formKey.currentState!.value});
                             ExpenseProvider().saveExpense(ExpenseModel.fromJson(_formKey.currentState!.value));
+                            _formKey.currentState?.reset();
                           } else {
                             print(_formKey.currentState?.value);
                             debugPrint('validation failed');
@@ -143,7 +144,7 @@ class ExpenseView extends GetView<ExpenseController> {
                         },
                         child: const Text(
                           'Submit',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blueAccent),
                         ),
                       ),
                     ),

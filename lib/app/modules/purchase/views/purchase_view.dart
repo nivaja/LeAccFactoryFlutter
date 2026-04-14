@@ -222,7 +222,7 @@ class PurchaseView extends GetView<PurchaseController> {
                         },
                         child: const Text(
                           'Save',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.blueAccent),
                         ),
                       ),
                     ),
@@ -390,7 +390,7 @@ class PurchaseView extends GetView<PurchaseController> {
                   },
                   child: const Text(
                     'Add Item',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.blueAccent),
                   ),
                 ),
               ),
